@@ -78,12 +78,10 @@ jobs:
         working-directory: /builder
         if: ${{ steps.init.outputs.status == 'success' && !cancelled() }}
         run: |
-          df -hT $GITHUB_WORKSPACE
           AUTH_REPO_URL=$(echo "$REPO_URL" | sed "s|://|://x-access-token:${{ secrets.REPO_TOKEN }}@|")
           git clone "$AUTH_REPO_URL" -b "$REPO_BRANCH" openwrt
           cd openwrt
           ln -sf /builder/openwrt ${{ github.workspace }}/openwrt
-          ln -sf /builder/openwrt /home/runner/work/_actions/MomoFlora/builder/master/openwrt
           COMMIT_AUTHOR=$(git show -s --date=short --format="作者: %an")
           echo "COMMIT_AUTHOR=$COMMIT_AUTHOR" >> $GITHUB_ENV
           COMMIT_DATE=$(git show -s --date=short --format="时间: %ci")
