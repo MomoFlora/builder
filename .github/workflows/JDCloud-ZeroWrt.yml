@@ -6,7 +6,7 @@ on:
 #    - cron: 0 19 * * *
 
 env:
-  REPO_URL: https://github.com/laipeng668/immortalwrt.git
+  REPO_URL: https://github.com/ZeroWrt/ZeroWrt.git
   REPO_BRANCH: openwrt-25.12
   CONFIG_FILE: configs/JDCloud.config
   EXTRA_CONFIG: configs/Universal.config
@@ -122,12 +122,12 @@ jobs:
 
       - name: Load Custom Configuration
         run: |
-          [ -e files ] && mv files $OPENWRT_PATH/files
+          [ -e files ] && mv files openwrt/files
           [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-          cat $EXTRA_CONFIG >> $OPENWRT_PATH/.config
+          cat $EXTRA_CONFIG >> openwrt/.config
           chmod +x $GITHUB_WORKSPACE/scripts/*.sh
           chmod +x $DIY_SCRIPT
-          cd $OPENWRT_PATH
+          cd openwrt
           $GITHUB_WORKSPACE/$DIY_SCRIPT
 
       - name: Download DL Package
