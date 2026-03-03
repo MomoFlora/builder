@@ -95,7 +95,7 @@ jobs:
       - name: Generate Variables
         if: ${{ steps.codes.outputs.status == 'success' && !cancelled() }}      
         run: |
-          cp $CONFIG_FILE $OPENWRT_PATH/.config
+          cp $CONFIG_FILE openwrt/.config
           cd openwrt
           make defconfig > /dev/null 2>&1
           SOURCE_REPO="$(echo $REPO_URL | awk -F '/' '{print $(NF)}')"
