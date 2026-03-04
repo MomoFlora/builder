@@ -9,10 +9,14 @@ jobs:
 
     IPQ60XX-ZeroWrt:
       uses: ./.github/workflows/IPQ60XX-ZeroWrt.yml
-
+      secrets:
+        REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+      
     IPQ807X-ZeroWrt:
       uses: ./.github/workflows/IPQ807X-ZeroWrt.yml
-
+      secrets:
+        REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+        
 #    Mediatek-ZeroWrt:
 #      uses: ./.github/workflows/Mediatek-ZeroWrt.yml
 
