@@ -3,6 +3,9 @@ name: Rockchip-ZeroWrt
 on:
   workflow_dispatch:
   workflow_call:
+    secrets:
+      REPO_TOKEN:
+        required: true
 #  schedule:
 #    - cron: 0 19 * * *
 
