@@ -1,0 +1,23 @@
+name: Trigger-All-Workflows  # 主要工作流的名称
+
+on:
+  workflow_dispatch:  # 手动触发：通过 GitHub UI 来触发
+  schedule:
+    - cron: 0 20 * * 5  # 北京时间星期六凌晨4点，定时触发
+
+jobs:
+
+    IPQ60XX-ZeroWrt:
+      uses: ./.github/workflows/IPQ60XX-ZeroWrt.yml
+
+    IPQ807X-ZeroWrt:
+      uses: ./.github/workflows/IPQ807X-ZeroWrt.yml
+
+#    Mediatek-ZeroWrt:
+#      uses: ./.github/workflows/Mediatek-ZeroWrt.yml
+
+#    Rockchip-ZeroWrt:
+#      uses: ./.github/workflows/Rockchip-ZeroWrt.yml
+
+#    X86_64-ZeroWrt:
+#      uses: ./.github/workflows/X86_64-ZeroWrt.yml
