@@ -82,6 +82,7 @@ jobs:
           git clone "$AUTH_REPO_URL" -b "$REPO_BRANCH" openwrt
           cd openwrt
           ln -sf /builder/openwrt ${{ github.workspace }}/openwrt
+          echo "OPENWRT_PATH=$PWD" >> $GITHUB_ENV
           COMMIT_AUTHOR=$(git show -s --date=short --format="作者: %an")
           echo "COMMIT_AUTHOR=$COMMIT_AUTHOR" >> $GITHUB_ENV
           COMMIT_DATE=$(git show -s --date=short --format="时间: %ci")
@@ -96,7 +97,7 @@ jobs:
         if: ${{ steps.codes.outputs.status == 'success' && !cancelled() }}      
         run: |
           cp $CONFIG_FILE openwrt/.config
-          cd openwrt
+          cd $OPENWRT_PATH
           make defconfig > /dev/null 2>&1
           SOURCE_REPO="$(echo $REPO_URL | awk -F '/' '{print $(NF)}')"
           echo "SOURCE_REPO=$SOURCE_REPO" >> $GITHUB_ENV
@@ -112,26 +113,26 @@ jobs:
         with:
           ccache: false
           mixkey: ${{ env.SOURCE_REPO }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
-          prefix: /builder/openwrt
+          prefix: ${{ env.OPENWRT_PATH }}
 
       - name: Update feeds
-        run: cd openwrt/ && ./scripts/feeds update -a
+        run: cd $OPENWRT_PATH/ && ./scripts/feeds update -a
 
       - name: Install feeds
-        run: cd openwrt/ && ./scripts/feeds install -a
+        run: cd $OPENWRT_PATH/ && ./scripts/feeds install -a
 
       - name: Load Custom Configuration
         run: |
-          [ -e files ] && mv files openwrt/files
-          [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-          cat $EXTRA_CONFIG >> openwrt/.config
+          [ -e files ] && mv files $OPENWRT_PATH/files
+          [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRT_PATH/.config
+          cat $EXTRA_CONFIG >> $OPENWRT_PATH/.config
           chmod +x $DIY_SCRIPT
-          cd openwrt
+          cd $OPENWRT_PATH
           $GITHUB_WORKSPACE/$DIY_SCRIPT
 
       - name: Download DL Package
         run: |
-          cd openwrt
+          cd $OPENWRT_PATH
           make defconfig
           make download -j8
           find dl -size -1024c -exec ls -l {} \;
@@ -140,7 +141,7 @@ jobs:
       - name: Compile Firmware
         id: compile
         run: |
-          cd openwrt
+          cd $OPENWRT_PATH
           echo -e "$(nproc) thread compile"
           make -j$(nproc) || make -j1 || make -j1 V=s
           echo "status=success" >> $GITHUB_OUTPUT
@@ -156,15 +157,15 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: ${{ env.SOURCE_REPO }}-bin-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}-${{ env.FILE_DATE }}
-          path: /builder/openwrt/bin
+          path: ${{ env.OPENWRT_PATH }}/bin
 
       - name: Organize Files
         if: steps.compile.outputs.status == 'success'
         run: |
-          cd openwrt/bin/targets/*/*
+          cd $OPENWRT_PATH/bin/targets/*/*
           cat sha256sums
-          cp openwrt/.config build.config
-          mv -f openwrt/bin/packages/*/*/*.apk packages
+          cp $OPENWRT_PATH/.config build.config
+          mv -f $OPENWRT_PATH/bin/packages/*/*/*.apk packages
           tar -zcf Packages.tar.gz packages
           rm -rf packages feeds.buildinfo version.buildinfo
           echo "KERNEL=$(cat *.manifest | grep ^kernel | cut -d- -f2 | tr -d ' ')" >> $GITHUB_ENV
