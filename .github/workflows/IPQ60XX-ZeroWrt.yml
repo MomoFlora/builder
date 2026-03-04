@@ -1,4 +1,4 @@
-name: JDCloud-ZeroWrt
+name: IPQ60XX-ZeroWrt
 
 on:
   workflow_dispatch:
@@ -8,13 +8,13 @@ on:
 env:
   REPO_URL: https://github.com/ZeroWrt/ZeroWrt.git
   REPO_BRANCH: openwrt-25.12
-  CONFIG_FILE: configs/JDCloud.config
+  CONFIG_FILE: configs/IPQ60XX.config
   EXTRA_CONFIG: configs/Universal.config
   DIY_SCRIPT: diy-script.sh
   CLASH_KERNEL: arm64
   UPLOAD_BIN_DIR: false
   FIRMWARE_RELEASE: true
-  FIRMWARE_TAG: JDCloud
+  FIRMWARE_TAG: IPQ60XX
   TZ: Asia/Shanghai
 
 jobs:
