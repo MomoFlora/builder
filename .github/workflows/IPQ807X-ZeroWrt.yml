@@ -10,7 +10,7 @@ on:
 #    - cron: 0 20 * * *
 
 env:
-  REPO_URL: https://github.com/ZeroWrt/ZeroWrt.git
+  REPO_URL: https://github.com/ZeroWrt/ZeroWrt
   REPO_BRANCH: openwrt-25.12
   CONFIG_FILE: configs/IPQ807X.config
   EXTRA_CONFIG: configs/General.config
