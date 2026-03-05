@@ -116,7 +116,7 @@ jobs:
         uses: HiGarfield/cachewrtbuild@main
         with:
           ccache: false
-          mixkey: ${{ env.SOURCE_REPO }}-${{ env.REPO_BRANCH }}-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
+          mixkey: zerowrt-25.12-${{ env.DEVICE_TARGET }}-${{ env.DEVICE_SUBTARGET }}
           prefix: ${{ env.OPENWRT_PATH }}
 
       - name: Update feeds
