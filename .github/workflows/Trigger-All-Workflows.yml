@@ -27,7 +27,7 @@ jobs:
 #      secrets:
 #        REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
 
-#    X86_64-ZeroWrt:
-#      uses: ./.github/workflows/X86_64-ZeroWrt.yml
-#      secrets:
-#        REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+    X86_64-ZeroWrt:
+      uses: ./.github/workflows/X86_64-ZeroWrt.yml
+      secrets:
+        REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
