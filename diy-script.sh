@@ -2,7 +2,7 @@
 
 # 移除要替换的包
 rm -rf feeds/luci/themes/luci-theme-argon
-rm -rf feeds/luci/applications/{luci-app-argon-config,luci-app-dae,luci-app-daed,luci-app-dockerman,luci-app-homeproxy,luci-app-openclash,luci-app-passwall,luci-app-ramfree,luci-app-unblockneteasemusic,luci-app-vlmcsd,luci-app-vsftpd}
+rm -rf feeds/luci/applications/{luci-app-argon-config,luci-app-dae,luci-app-daed,luci-app-dockerman,luci-app-homeproxy,luci-app-openclash,luci-app-wechatpush,luci-app-appfilter,luci-app-passwall,luci-app-ramfree,luci-app-unblockneteasemusic,luci-app-vlmcsd,luci-app-vsftpd}
 rm -rf feeds/packages/net/{open-app-filter,mosdns,vlmcsd,xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,trojan-plus,tuic-client,v2ray-plugin,xray-plugin,geoview,shadow-tls}
 
 # drop attendedsysupgrade
@@ -15,6 +15,9 @@ sed -i '/luci-app-attendedsysupgrade/d' \
 # fixed rust host build download llvm in ci error
 sed -i 's/--set=llvm\.download-ci-llvm=true/--set=llvm.download-ci-llvm=false/' feeds/packages/lang/rust/Makefile
 grep -q -- '--ci false \\' feeds/packages/lang/rust/Makefile || sed -i '/x\.py \\/a \        --ci false \\' feeds/packages/lang/rust/Makefile
+
+# Increase CPU voltage for 1.5GHz OPP on IPQ6018 to improve stability
+sed -i 's/opp-microvolt = <937500>;/opp-microvolt = <950000>;/' target/linux/qualcommax/patches-6.12/0038-v6.16-arm64-dts-qcom-ipq6018-add-1.5GHz-CPU-Frequency.patch
 
 # TTYD
 sed -i 's/services/system/g' feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json
@@ -31,7 +34,7 @@ sed -i "s|^OPENWRT_RELEASE=\".*\"|OPENWRT_RELEASE=\"ZeroWrt 标准版 @R$(date +
 default_password=$(openssl passwd -5 password)
 sed -i "s|^root:[^:]*:|root:${default_password}:|" package/base-files/files/etc/shadow
 
-# Git稀疏克隆，只克隆指定目录到本地
+# Git sparse clone: only clone the specified directory to the local repository
 function git_sparse_clone() {
   branch="$1" repourl="$2" && shift 2
   git clone --depth=1 -b $branch --single-branch --filter=blob:none --sparse $repourl
@@ -54,6 +57,9 @@ git clone --depth=1 https://github.com/ZeroWrt/openwrt_helloworld package/new/he
 
 # openwrt_packages
 git clone --depth=1 https://github.com/ZeroWrt/openwrt_packages package/openwrt_packages
+
+# wechatpush
+git clone --depth=1 https://github.com/tty228/luci-app-wechatpush package/luci-app-wechatpush
 
 # Docker
 rm -rf feeds/luci/applications/luci-app-dockerman
