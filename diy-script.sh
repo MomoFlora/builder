@@ -5,13 +5,6 @@ rm -rf feeds/luci/themes/luci-theme-argon
 rm -rf feeds/luci/applications/{luci-app-argon-config,luci-app-dae,luci-app-daed,luci-app-dockerman,luci-app-homeproxy,luci-app-openclash,luci-app-wechatpush,luci-app-appfilter,luci-app-passwall,luci-app-ramfree,luci-app-unblockneteasemusic,luci-app-vlmcsd,luci-app-vsftpd}
 rm -rf feeds/packages/net/{open-app-filter,mosdns,vlmcsd,xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,trojan-plus,tuic-client,v2ray-plugin,xray-plugin,geoview,shadow-tls}
 
-# drop attendedsysupgrade
-sed -i '/luci-app-attendedsysupgrade/d' \
-    feeds/luci/collections/luci-nginx/Makefile \
-    feeds/luci/collections/luci-ssl-openssl/Makefile \
-    feeds/luci/collections/luci-ssl/Makefile \
-    feeds/luci/collections/luci/Makefile
-
 # fixed rust host build download llvm in ci error
 sed -i 's/--set=llvm\.download-ci-llvm=true/--set=llvm.download-ci-llvm=false/' feeds/packages/lang/rust/Makefile
 grep -q -- '--ci false \\' feeds/packages/lang/rust/Makefile || sed -i '/x\.py \\/a \        --ci false \\' feeds/packages/lang/rust/Makefile
