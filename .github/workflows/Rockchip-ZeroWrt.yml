@@ -11,7 +11,7 @@ on:
 
 env:
   REPO_URL: https://github.com/ZeroWrt/ZeroWrt
-  REPO_BRANCH: master
+  REPO_BRANCH: openwrt-25.12
   CONFIG_FILE: configs/Rockchip.config
   EXTRA_CONFIG: configs/General.config
   DIY_SCRIPT: diy-script.sh
