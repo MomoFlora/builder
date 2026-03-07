@@ -1,3 +1,11 @@
+<h1 align="center">
+  ✨ ZeroWrt 固件仓库 ✨
+</h1>
+
+<p align="center">
+  基于 <strong>ImmortalWrt</strong> 平台，新增对更多设备的兼容性，同时支持 <strong>IPQ 系列处理器</strong> 的 <strong>NSS 硬件加速</strong>。
+</p>
+
 <!-- 技能图标/支持设备 -->
 <p align="center">
   <a href="https://skillicons.dev#gh-light-mode-only" target="_blank">
