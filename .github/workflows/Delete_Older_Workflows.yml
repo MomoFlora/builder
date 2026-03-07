@@ -8,7 +8,7 @@ on:
 
 jobs:
   cleanup:
-    runs-on: self-hosted
+    runs-on: ubuntu-24.04
     steps:
       - name: Delete all workflow runs
         uses: actions/github-script@v6
