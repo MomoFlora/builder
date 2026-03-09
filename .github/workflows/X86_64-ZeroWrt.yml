@@ -10,7 +10,7 @@ on:
 #    - cron: 0 19 * * *
 
 env:
-  REPO_URL: https://github.com/ZeroWrt/ZeroWrt
+  REPO_URL: https://git.kejizero.xyz/ZeroWrt/ZeroWrt
   REPO_BRANCH: openwrt-25.12
   CONFIG_FILE: configs/X86_64.config
   EXTRA_CONFIG: configs/General.config
@@ -82,8 +82,7 @@ jobs:
         working-directory: /builder
         if: ${{ steps.init.outputs.status == 'success' && !cancelled() }}
         run: |
-          AUTH_REPO_URL=$(echo "$REPO_URL" | sed "s|://|://x-access-token:${{ secrets.REPO_TOKEN }}@|")
-          git clone "$AUTH_REPO_URL" -b "$REPO_BRANCH" openwrt
+          git clone $REPO_URL -b $REPO_BRANCH openwrt
           cd openwrt
           ln -sf /builder/openwrt ${{ github.workspace }}/openwrt
           echo "OPENWRT_PATH=$PWD" >> $GITHUB_ENV
