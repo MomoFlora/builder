@@ -8,9 +8,6 @@ rm -rf feeds/packages/net/{open-app-filter,mosdns,vlmcsd,xray-core,v2ray-geodata
 # fixed rust host build download llvm in ci error
 sed -i 's/--set=llvm\.download-ci-llvm=true/--set=llvm.download-ci-llvm=false/' feeds/packages/lang/rust/Makefile
 
-# Add LLVM environment variables to bypass VCS password detection in CMake builds for closed-source repositories
-sed -i '/define Host\/Compile/,/^endef$/ s/TARGET_CFLAGS="$(TARGET_CFLAGS)" \\/TARGET_CFLAGS="$(TARGET_CFLAGS)" \\\n\tLLVM_FORCE_VC_REPOSITORY="https:\/\/github.com\/llvm\/llvm-project" \\\n\tLLVM_FORCE_VC_REVISION="" \\/' feeds/packages/lang/rust/Makefile
-
 # Increase CPU voltage for 1.5GHz OPP on IPQ6018 to improve stability
 sed -i 's/opp-microvolt = <937500>;/opp-microvolt = <950000>;/' target/linux/qualcommax/patches-6.12/0038-v6.16-arm64-dts-qcom-ipq6018-add-1.5GHz-CPU-Frequency.patch
 
